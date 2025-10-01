@@ -1,0 +1,7 @@
+type EventForm {
+  id: ID!
+  formSlug: String!
+  eventId: ID!
+  event: Event!
+  questions: [Question!]!
+}

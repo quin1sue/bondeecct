@@ -1,0 +1,16 @@
+enum UserRole {
+  STUDENT
+  FACULTY
+  ADMIN
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  department: String!
+  role: UserRole!
+  userEvents: [Event!]!
+  onRegisteredEvents: [Event!]!
+  answerRecords: [AnswerRecords!]
+}

@@ -1,0 +1,6 @@
+type Question {
+  id: ID!
+  text: String!
+  formId: ID!
+  form: EventForm!
+}

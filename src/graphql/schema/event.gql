@@ -1,0 +1,24 @@
+enum EventStatus {
+  UPCOMING
+  ONGOING
+  CANCELLED
+  DONE
+}
+
+type Event {
+  id: ID!
+  slug: String!
+  name: String!
+  tags: [String!]!
+  eventStatus: EventStatus!
+  createdAt: Date!
+  endAt: Date
+  author: User!
+  registeredUsers: [User!]!
+  eventForms: [EventForm!]!
+}
+
+type Query {
+  events: [Event!]!
+  event(id: ID!): Event
+}

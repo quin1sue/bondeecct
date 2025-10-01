@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  FACULTY
+  ADMIN
+}
+
+enum EventStatus {
+  NONE
+  UPCOMING
+  ONGOING
+  CANCELLED
+  DONE
+}
+
+model User {
+  id                 String         @id @db.Uuid()
+  role               UserRole       @default(STUDENT)
+  name               String         @db.VarChar()
+  email              String         @unique
+  department         String         @default("unassigned")
+  userEvents         Event[]        @relation("AuthoredEvents")
+  onRegisteredEvents Event[]        @relation("RegisteredEvents")
+  answerRecord       AnswerRecords?
+
+  @@index([name])
+}
+
+model Event {
+  id              String      @id @default(uuid()) @db.Uuid()
+  slug            String      @unique @db.VarChar(256)
+  name            String
+  tags            String[]
+  eventStatus     EventStatus @default(NONE)
+  authorId        String      @db.Uuid()
+  createdAt       DateTime    @default(now())
+  endAt           DateTime?
+  author          User        @relation("AuthoredEvents", fields: [authorId], references: [id])
+  registeredUsers User[]      @relation("RegisteredEvents")
+  eventForms      EventForm[] //multiple forms per event one to many rs
+}
+
+model EventForm {
+  id        String     @id @default(uuid()) @db.Uuid()
+  formSlug  String     @unique
+  eventId   String     @db.Uuid()
+  event     Event      @relation(fields: [eventId], references: [id])
+  questions Question[] //multiple questions per form
+
+  @@index([formSlug])
+}
+
+model Question {
+  id     String    @id @default(uuid()) @db.Uuid()
+  text   String    @db.VarChar(512)
+  formId String    @db.Uuid()
+  form   EventForm @relation(fields: [formId], references: [id])
+}
+
+model AnswerRecords {
+  id       String   @id @default(uuid()) @db.Uuid()
+  userId   String   @unique @db.Uuid()
+  user     User     @relation(fields: [userId], references: [id])
+  response Json // store answers like [{formSlug, question, answer}, etc etc PUTANGINA]
+  sentAt   DateTime @default(now())
+}
