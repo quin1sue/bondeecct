@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 export const Logo = () => {
   return (
@@ -11,5 +12,19 @@ export const Logo = () => {
         className="rounded-full h-[25px] w-[25px] bg-red-700"
       />
     </Link>
+  );
+};
+
+export const PicLogo = () => {
+  return (
+    <>
+      <Image
+        alt="cct png logo"
+        height={900}
+        width={900}
+        src={"/logo-web.png"}
+        className="h-[70px] w-[50px] "
+      />
+    </>
   );
 };

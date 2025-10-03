@@ -1,13 +1,16 @@
 "use client";
-import { createClient } from "./client";
+import { createClient } from "@/utils/supabase/client";
+
 export const signInWithGoogle = async () => {
   const supabase = createClient();
-  return await supabase.auth.signInWithOAuth({
+  const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`, // optional
+      redirectTo: `${window.location.origin}/api/auth/redirect`, //route.ts server callback
     },
   });
+
+  if (error) console.error("Google sign-in error:", error.message);
 };
 
 export const signOut = async (): Promise<{

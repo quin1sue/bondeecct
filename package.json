@@ -50,7 +50,12 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@apollo/protobufjs",
-      "@prisma/client"
+      "@prisma/client",
+      "@prisma/engines",
+      "@tailwindcss/oxide",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
     ]
   }
 }

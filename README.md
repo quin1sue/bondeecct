@@ -24,8 +24,7 @@ cd <your folder directory>
 ```
 
 2. **Install dependencies**
-   > [!NOTE]
-   > You must have **pnpm** installed in your system to run this command.
+   > **Note**: Make sure you have **pnpm** installed in your system.
 
 ```
 pnpm install

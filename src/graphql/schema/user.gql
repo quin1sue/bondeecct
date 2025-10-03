@@ -14,3 +14,13 @@ type User {
   onRegisteredEvents: [Event!]!
   answerRecords: [AnswerRecords!]
 }
+
+type VerifyResponse {
+  success: Boolean!
+  message: String!
+  status: Int!
+}
+
+type Mutation {
+  verifyUser: VerifyResponse!
+}

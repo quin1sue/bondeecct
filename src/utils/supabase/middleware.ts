@@ -1,6 +1,6 @@
+export const runtime = "nodejs";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -35,21 +35,33 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
 
-  // const {
-  //   data: { user },
-  // } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // if (
-  //   !user &&
-  //   !request.nextUrl.pathname.startsWith("/login") &&
-  //   !request.nextUrl.pathname.startsWith("/auth") &&
-  //   !request.nextUrl.pathname.startsWith("/error")
-  // ) {
-  //   // no user, potentially respond by redirecting the user to the login page
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/login";
-  //   return NextResponse.redirect(url);
-  // }
+  const { data: userFetch } =
+    (await supabase.from("User").select("*").eq("id", user?.id).single()) ??
+    null;
+
+  if (!userFetch && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.searchParams.set("tab", "verification");
+    return NextResponse.redirect(url);
+  }
+  if (!user && request.nextUrl.searchParams.get("tab") === "verification") {
+  }
+  if (
+    (userFetch &&
+      user &&
+      request.nextUrl.searchParams.get("tab") === "verification") ||
+    (!user && request.nextUrl.searchParams.get("tab") === "verification")
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.searchParams.delete("tab");
+    return NextResponse.redirect(url);
+  }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
@@ -63,6 +75,5 @@ export async function updateSession(request: NextRequest) {
   //    return myNewResponse
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
-  await supabase.auth.getUser();
-  return { supabaseResponse, supabase };
+  return supabaseResponse;
 }
