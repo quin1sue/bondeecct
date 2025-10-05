@@ -44,7 +44,7 @@ model Event {
   authorId        String      @db.Uuid()
   createdAt       DateTime    @default(now())
   endAt           DateTime?
-  author          User        @relation("AuthoredEvents", fields: [authorId], references: [id])
+  author          User        @relation("AuthoredEvents", fields: [authorId], references: [id], onDelete: Cascade)
   registeredUsers User[]      @relation("RegisteredEvents")
   eventForms      EventForm[] //multiple forms per event one to many rs
 }

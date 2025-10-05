@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { createClient } from "@/utils/supabase/server";
+import QueryProvider from "@/components/custom/global/tanstack";
+import { Toaster } from "sonner";
 const geistSans = Inter({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,13 +26,17 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
-  console.log(data);
+  console.log("Auth user:", data);
+  const { data: allUsers } = await supabase.from("User").select("*");
+  console.log("All users in User table:", allUsers);
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.className} ${geistMono.className} antialiased`}
       >
-        {children}
+        <QueryProvider>{children}</QueryProvider>
+        <Toaster />
       </body>
     </html>
   );

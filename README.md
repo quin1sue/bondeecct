@@ -10,7 +10,8 @@
 - [Supabase](https://supabase.com/)
 - [TailwindCSS](https://tailwindcss.com/)
 - [GraphQL](https://graphql.org/)
-- [PNPM](https://pnpm.io/)
+- [pnpm](https://pnpm.io/)
+- [TanstackQuery](https://tanstack.com/query/latest)
 
 ###
 

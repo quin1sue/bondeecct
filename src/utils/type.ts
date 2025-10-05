@@ -1,3 +1,7 @@
+import { NextRequest } from "next/server";
+import { prisma } from "./prisma";
+import { User } from "@supabase/supabase-js";
+
 export enum UserRole {
   STUDENT = "STUDENT",
   FACULTY = "FACULTY",
@@ -49,5 +53,22 @@ export type DataType = {
       question: string;
       eventId: string;
     }>;
+  };
+};
+
+// querying types
+export type Query = {
+  // context type
+  Context: {
+    req: NextRequest;
+    user: User | null;
+    isAuthenticated: boolean;
+    prisma: typeof prisma;
+  };
+  // return types in graphql api
+  VerifyUser: {
+    isSuccess: boolean;
+    message: string;
+    status: number;
   };
 };

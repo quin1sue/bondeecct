@@ -1,3 +1,5 @@
+scalar DateTime
+
 enum EventStatus {
   UPCOMING
   ONGOING
@@ -11,8 +13,8 @@ type Event {
   name: String!
   tags: [String!]!
   eventStatus: EventStatus!
-  createdAt: Date!
-  endAt: Date
+  createdAt: DateTime!
+  endAt: DateTime
   author: User!
   registeredUsers: [User!]!
   eventForms: [EventForm!]!

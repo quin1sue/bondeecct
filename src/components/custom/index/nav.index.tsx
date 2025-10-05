@@ -38,13 +38,7 @@ export function Nav({
           <Link href="/about" className="hover:text-red-600 transition-colors">
             About
           </Link>
-          <span className="text-gray-400">|</span>
-          <Link
-            href="/login"
-            className="bg-red-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-700 transition-colors"
-          >
-            Login
-          </Link>
+          <span className="text-gray-400">&#124;</span>
         </div>
 
         {/* Mobile Menu Button */}
@@ -52,7 +46,7 @@ export function Nav({
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden focus:outline-none text-3xl text-black"
         >
-          ☰
+          &#9776;
         </button>
       </div>
 

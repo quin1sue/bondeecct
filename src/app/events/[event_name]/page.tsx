@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 interface EventPageProps {
@@ -17,7 +18,9 @@ export default async function EventPage({ params }: EventPageProps) {
     <main className="max-w-4xl mx-auto py-10">
       <h1 className="text-3xl font-bold text-gray-900">{event.title}</h1>
       <p className="text-gray-600 mt-2">{event.date}</p>
-      <img
+      <Image
+        height={900}
+        width={900}
         src={event.image}
         alt={event.title}
         className="w-full h-64 object-cover rounded-lg my-6"

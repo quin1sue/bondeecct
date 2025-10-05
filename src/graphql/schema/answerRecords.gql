@@ -1,7 +1,9 @@
+scalar DateTime
+scalar Json
 type AnswerRecords {
   id: ID!
   userId: ID!
   user: User!
   response: Json!
-  sentAt: Date!
+  sentAt: DateTime!
 }

@@ -13,10 +13,7 @@ export const Header = () => (
             your interests. Search by tags, trends, or nearby happenings — all
             in one place.
           </p>
-          <Button
-            onClick={signInWithGoogle}
-            className="inline-block px-6 py-3 rounded-full bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-200 shadow-md"
-          >
+          <Button onClick={signInWithGoogle} className="hover:cursor-pointer">
             Login
           </Button>
         </div>

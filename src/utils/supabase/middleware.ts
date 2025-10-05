@@ -1,10 +1,13 @@
-export const runtime = "nodejs";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+  let supabaseResponse = NextResponse.next({ request });
+
+  // returns a html error fix
+  if (request.nextUrl.pathname === "/api/graphql") {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -18,9 +21,7 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
+          supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           );
@@ -29,51 +30,38 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  // IMPORTANT: DO NOT REMOVE auth.getUser()
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: userFetch } =
-    (await supabase.from("User").select("*").eq("id", user?.id).single()) ??
-    null;
+  // this code is causing a bug. It returns null even though there is already an existing data in the database.
+  const { data: userFetch } = await supabase
+    .from("User")
+    .select("*")
+    .eq("email", user?.email)
+    .maybeSingle();
 
-  if (!userFetch && user) {
+  const { data: allUsers } = await supabase.from("User").select("*");
+  console.log("All users in User table:", allUsers);
+
+  const isVerified = userFetch?.verified ?? false;
+  const tab = request.nextUrl.searchParams.get("tab");
+
+  //if user exists but is not verified, redirect to /?tab=verification
+  if (user && !isVerified && tab !== "verification") {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("tab", "verification");
     return NextResponse.redirect(url);
   }
-  if (!user && request.nextUrl.searchParams.get("tab") === "verification") {
-  }
-  if (
-    (userFetch &&
-      user &&
-      request.nextUrl.searchParams.get("tab") === "verification") ||
-    (!user && request.nextUrl.searchParams.get("tab") === "verification")
-  ) {
+
+  //if user is verified or no user, remove the verification tab
+  if ((isVerified || !user) && tab === "verification") {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.delete("tab");
     return NextResponse.redirect(url);
   }
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
-  // If you're creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
   return supabaseResponse;
 }
