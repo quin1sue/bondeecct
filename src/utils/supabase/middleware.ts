@@ -1,10 +1,9 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  // returns a html error fix
+  // returns the html error fix
   if (request.nextUrl.pathname === "/api/graphql") {
     return supabaseResponse;
   }
@@ -33,22 +32,15 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  // this code is causing a bug. It returns null even though there is already an existing data in the database.
-  const { data: userFetch } = await supabase
+  const userFetch = await supabase
     .from("User")
     .select("*")
-    .eq("email", user?.email)
-    .maybeSingle();
-
-  const { data: allUsers } = await supabase.from("User").select("*");
-  console.log("All users in User table:", allUsers);
-
-  const isVerified = userFetch?.verified ?? false;
+    .eq("id", user?.id)
+    .single();
   const tab = request.nextUrl.searchParams.get("tab");
 
   //if user exists but is not verified, redirect to /?tab=verification
-  if (user && !isVerified && tab !== "verification") {
+  if (user && !userFetch && tab !== "verification") {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.set("tab", "verification");
@@ -56,7 +48,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   //if user is verified or no user, remove the verification tab
-  if ((isVerified || !user) && tab === "verification") {
+  if ((userFetch || !user) && tab === "verification") {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.searchParams.delete("tab");

@@ -5,15 +5,17 @@ export const Header = () => (
     <section className="min-h-[80vh] grid grid-cols-1 md:grid-cols-2">
       <div className="flex items-center justify-center px-8 py-10">
         <div className="space-y-8 text-center md:text-left">
-          <h1 className="text-5xl font-extrabold leading-tight">
+          <h1 className="text-5xl text-red-900 font-extrabold leading-tight">
             Discover Events. <br /> Join Communities.
           </h1>
           <p className="text-lg text-gray-700 max-w-md">
-            Bondee lets you explore and register for public events that match
-            your interests. Search by tags, trends, or nearby happenings — all
-            in one place.
+            Bondee lets you explore and register for CCT events that match your
+            interests. Search by tags, trends, or nearby happenings
           </p>
-          <Button onClick={signInWithGoogle} className="hover:cursor-pointer">
+          <Button
+            onClick={signInWithGoogle}
+            className="hover:cursor-pointer bg-red-900"
+          >
             Login
           </Button>
         </div>

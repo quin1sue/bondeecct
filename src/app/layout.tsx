@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { createClient } from "@/utils/supabase/server";
 import QueryProvider from "@/components/custom/global/tanstack";
 import { Toaster } from "sonner";
 const geistSans = Inter({
@@ -24,12 +23,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getUser();
-  console.log("Auth user:", data);
-  const { data: allUsers } = await supabase.from("User").select("*");
-  console.log("All users in User table:", allUsers);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body

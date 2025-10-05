@@ -10,7 +10,7 @@ export const SubFooter = () => (
           "Get notified and participate in awesome events.",
         ].map((step, i) => (
           <div key={i} className="max-w-sm space-y-2">
-            <div className="w-12 h-12 rounded-full bg-red-700 text-white flex items-center justify-center font-bold text-xl mx-auto">
+            <div className="w-12 h-12 rounded-full bg-red-900 text-white flex items-center justify-center font-bold text-xl mx-auto">
               {i + 1}
             </div>
             <p className="text-gray-700">{step}</p>
@@ -18,7 +18,7 @@ export const SubFooter = () => (
         ))}
       </div>
     </section>
-    <section className="bg-red-700 text-white py-16 px-6 text-center">
+    <section className="bg-red-900 text-white py-16 px-6 text-center">
       <h2 className="text-2xl font-bold mb-2">Stay in the loop</h2>
       <p className="mb-6">
         Sign up to receive upcoming event alerts and updates

@@ -15,6 +15,15 @@
 
 ###
 
+### Features
+
+[x] User authentication via Google oAuth.
+[x] Only user's with a valid @citycollegeoftagaytay.edu.ph can only verify.
+[] Built-in forms
+[] event creation in admin panel
+
+etc
+
 ### Development
 
 1. **Clone the repository**
@@ -25,7 +34,7 @@ cd <your folder directory>
 ```
 
 2. **Install dependencies**
-   > **Note**: Make sure you have **pnpm** installed in your system.
+   > **Note**: Make sure you have [ **pnpm** ](https://pnpm.io/installation) installed in your system.
 
 ```
 pnpm install
